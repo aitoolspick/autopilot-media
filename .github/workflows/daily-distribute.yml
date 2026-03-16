@@ -63,11 +63,8 @@ jobs:
           HATENA_API_KEY: ${{ secrets.HATENA_API_KEY }}
         run: npx tsx scripts/post-hatena.ts
 
-      - name: Send newsletter (Wed & Sat only)
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
-        run: npx tsx scripts/send-newsletter.ts
+      # Newsletter: Phase 2 (scripts/phase2/send-newsletter.ts に移動済み)
+      # Buttondownアカウント作成後に有効化
 
       - name: Pull and push with retry
         run: |
