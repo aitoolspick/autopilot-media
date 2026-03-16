@@ -1,0 +1,48 @@
+{
+  "initialized": "2026-03-15",
+  "daily": [],
+  "weekly": [
+    {
+      "date": "2026-03-15",
+      "gumroad": {
+        "products": 0,
+        "sales": 0,
+        "revenue": 0
+      },
+      "nl_subscribers": 0,
+      "blog_posts": 0,
+      "note_articles": 0
+    },
+    {
+      "date": "2026-03-16",
+      "gumroad": {
+        "products": 0,
+        "sales": 0,
+        "revenue": 0
+      },
+      "nl_subscribers": 0,
+      "blog_posts": 0,
+      "note_articles": 0
+    }
+  ],
+  "totals": {
+    "blog_posts": 0,
+    "note_articles": 0,
+    "reddit_posts": 0,
+    "x_posts_en": 0,
+    "x_posts_ja": 0,
+    "gumroad_products": 0,
+    "gumroad_sales": 0,
+    "gumroad_revenue_usd": 0,
+    "note_sales": 0,
+    "note_revenue_jpy": 0,
+    "affiliate_revenue_usd": 0,
+    "affiliate_revenue_jpy": 0,
+    "nl_subscribers": 0,
+    "nl_open_rate": 0,
+    "blog_sessions": 0,
+    "reddit_karma": 0,
+    "x_followers_en": 0,
+    "x_followers_ja": 0
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "autopilot-media",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Autonomous AI-powered media company",
+  "scripts": {
+    "generate": "tsx scripts/generate-content.ts",
+    "publish": "tsx scripts/publish-blog.ts",
+    "reddit": "tsx scripts/post-reddit.ts",
+    "x": "tsx scripts/post-x.ts",
+    "product": "tsx scripts/phase2/create-product.ts",
+    "newsletter": "tsx scripts/phase2/send-newsletter.ts",
+    "metrics": "tsx scripts/collect-metrics.ts",
+    "report": "tsx scripts/send-report.ts",
+    "hatena": "tsx scripts/post-hatena.ts",
+    "pdf": "tsx scripts/phase2/generate-pdf.ts",
+    "growth": "tsx scripts/growth-hack.ts",
+    "strategy": "tsx scripts/weekly-strategy.ts",
+    "all": "npm run generate && npm run publish && npm run reddit && npm run x && npm run hatena && npm run report"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "marked": "^15.0.0",
+    "tsx": "^4.19.0",
+    "twitter-api-v2": "^1.18.0"
+  }
+}

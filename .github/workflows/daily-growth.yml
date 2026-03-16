@@ -1,0 +1,57 @@
+name: Daily Growth Hacking
+
+on:
+  schedule:
+    - cron: '0 15 * * *'  # 毎日 15:00 UTC (00:00 JST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check STOP file
+        run: |
+          if [ -f state/STOP ]; then
+            echo "STOP file detected. Aborting."
+            exit 0
+          fi
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run growth hacking
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          HATENA_ID: ${{ secrets.HATENA_ID }}
+          HATENA_API_KEY: ${{ secrets.HATENA_API_KEY }}
+        run: npx tsx scripts/growth-hack.ts
+
+      - name: Commit state updates
+        run: |
+          git config user.name "Autopilot Media Bot"
+          git config user.email "bot@autopilot-media.dev"
+          git add state/
+          git diff --cached --quiet || git commit -m "Auto: daily growth hack $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git push && break
+            echo "Push failed (attempt $i), pulling and retrying..."
+            git pull --rebase origin main || true
+            sleep 2
+          done

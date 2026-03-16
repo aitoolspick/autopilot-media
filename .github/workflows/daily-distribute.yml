@@ -1,0 +1,84 @@
+name: Daily Distribution
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # 毎日 12:00 UTC (21:00 JST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check STOP file
+        run: |
+          if [ -f state/STOP ]; then
+            echo "STOP file detected. Aborting."
+            exit 0
+          fi
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Publish blog to GitHub Pages
+        run: npx tsx scripts/publish-blog.ts
+
+      - name: Post to Reddit
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+        run: npx tsx scripts/post-reddit.ts
+
+      - name: Post to X
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          X_JA_API_KEY: ${{ secrets.X_JA_API_KEY }}
+          X_JA_API_SECRET: ${{ secrets.X_JA_API_SECRET }}
+          X_JA_ACCESS_TOKEN: ${{ secrets.X_JA_ACCESS_TOKEN }}
+          X_JA_ACCESS_SECRET: ${{ secrets.X_JA_ACCESS_SECRET }}
+        run: npx tsx scripts/post-x.ts
+
+      - name: Post to Hatena Blog (Japanese)
+        env:
+          HATENA_ID: ${{ secrets.HATENA_ID }}
+          HATENA_BLOG_ID: ${{ secrets.HATENA_BLOG_ID }}
+          HATENA_API_KEY: ${{ secrets.HATENA_API_KEY }}
+        run: npx tsx scripts/post-hatena.ts
+
+      - name: Send newsletter (Wed & Sat only)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+        run: npx tsx scripts/send-newsletter.ts
+
+      - name: Pull and push with retry
+        run: |
+          git config user.name "Autopilot Media Bot"
+          git config user.email "bot@autopilot-media.dev"
+          git add state/ docs/
+          git diff --cached --quiet && exit 0
+          git commit -m "Auto: distribute content $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            sleep 5
+          done
+          echo "Push failed after 3 retries"
+          exit 1

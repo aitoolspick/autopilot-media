@@ -1,0 +1,52 @@
+name: Daily Content Generation
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # 毎日 09:00 UTC (18:00 JST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check STOP file
+        run: |
+          if [ -f state/STOP ]; then
+            echo "STOP file detected. Aborting."
+            exit 0
+          fi
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Generate content
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: npx tsx scripts/generate-content.ts
+
+      - name: Pull and push with retry
+        run: |
+          git config user.name "Autopilot Media Bot"
+          git config user.email "bot@autopilot-media.dev"
+          git add content/ state/
+          git diff --cached --quiet && exit 0
+          git commit -m "Auto: generate daily content $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            sleep 5
+          done
+          echo "Push failed after 3 retries"
+          exit 1

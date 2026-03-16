@@ -1,0 +1,27 @@
+name: Daily Report
+
+on:
+  schedule:
+    - cron: '0 22 * * *'  # 毎日 22:00 UTC (07:00 JST)
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install tsx
+
+      - name: Generate and send report
+        env:
+          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: npx tsx scripts/send-report.ts

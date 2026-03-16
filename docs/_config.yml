@@ -1,0 +1,11 @@
+title: AI Tools Hub
+description: Honest reviews and comparisons of AI tools for productivity, coding, writing, and more.
+baseurl: ""
+url: ""
+theme: minima
+permalink: /:year/:month/:day/:title/
+markdown: kramdown
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag

@@ -1,0 +1,57 @@
+name: Weekly Strategy Meeting
+
+on:
+  schedule:
+    - cron: '0 21 * * 0'  # 毎週日曜 21:00 UTC (翌月曜 06:00 JST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  strategy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check STOP file
+        run: |
+          if [ -f state/STOP ]; then
+            echo "STOP file detected. Aborting."
+            exit 0
+          fi
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Collect metrics
+        env:
+          GUMROAD_ACCESS_TOKEN: ${{ secrets.GUMROAD_ACCESS_TOKEN }}
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+        run: npx tsx scripts/collect-metrics.ts
+
+      - name: Run weekly strategy meeting
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: npx tsx scripts/weekly-strategy.ts
+
+      - name: Commit strategy updates
+        run: |
+          git config user.name "Autopilot Media Bot"
+          git config user.email "bot@autopilot-media.dev"
+          git add state/ lessons.md references/
+          git diff --cached --quiet || git commit -m "Auto: weekly strategy update $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git push && break
+            echo "Push failed (attempt $i), pulling and retrying..."
+            git pull --rebase origin main || true
+            sleep 2
+          done

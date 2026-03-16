@@ -1,0 +1,130 @@
+{
+  "project": "autopilot-media",
+  "niche": "AI tools × productivity tools",
+  "languages": [
+    "en",
+    "ja"
+  ],
+  "phase": "setup",
+  "week": 0,
+  "content_queue": [
+    {
+      "topic": "Best AI Coding Assistants 2026: Claude Code vs Cursor vs Windsurf",
+      "ja_topic": "AIコーディングツール比較2026：Claude Code vs Cursor vs Windsurf",
+      "type": "comparison",
+      "priority": "high",
+      "affiliate_targets": [
+        "cursor.com",
+        "claude.ai"
+      ],
+      "reddit_subs": [
+        "r/artificial",
+        "r/programming",
+        "r/ChatGPT"
+      ],
+      "status": "completed"
+    },
+    {
+      "topic": "7 AI Writing Tools That Actually Save Time (Tested)",
+      "ja_topic": "本当に時短になるAIライティングツール7選（実際に検証）",
+      "type": "listicle",
+      "priority": "high",
+      "affiliate_targets": [
+        "jasper.ai",
+        "grammarly.com"
+      ],
+      "reddit_subs": [
+        "r/productivity",
+        "r/writing"
+      ],
+      "status": "completed"
+    },
+    {
+      "topic": "I Replaced 5 Paid Apps with Free AI Tools - Here's What Happened",
+      "ja_topic": "有料アプリ5つをAI無料ツールに置き換えた結果",
+      "type": "experience",
+      "priority": "high",
+      "affiliate_targets": [],
+      "reddit_subs": [
+        "r/productivity",
+        "r/Frugal",
+        "r/SideProject"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "The Complete Guide to AI-Powered Notion Workflows",
+      "ja_topic": "AI×Notion 完全ワークフローガイド",
+      "type": "guide",
+      "priority": "medium",
+      "affiliate_targets": [
+        "notion.com"
+      ],
+      "reddit_subs": [
+        "r/Notion",
+        "r/productivity"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "ChatGPT vs Claude vs Gemini: Which AI Should You Use for What?",
+      "ja_topic": "ChatGPT vs Claude vs Gemini：用途別おすすめAI比較",
+      "type": "comparison",
+      "priority": "high",
+      "affiliate_targets": [],
+      "reddit_subs": [
+        "r/ChatGPT",
+        "r/artificial",
+        "r/ClaudeAI"
+      ],
+      "status": "pending"
+    }
+  ],
+  "product_queue": [
+    {
+      "name": "Ultimate AI Prompt Pack: 100 Prompts for Productivity",
+      "ja_name": "AIプロンプト集：生産性を10倍にする100のプロンプト",
+      "type": "prompt_pack",
+      "price_usd": 9,
+      "price_jpy": 980,
+      "platform": "gumroad",
+      "ja_platform": "note",
+      "status": "pending"
+    }
+  ],
+  "affiliate_programs": {
+    "en": {
+      "approved": [],
+      "pending": [
+        "amazon_associates"
+      ],
+      "target": [
+        "impact_semrush",
+        "partnerstack_notion",
+        "jasper"
+      ]
+    },
+    "ja": {
+      "approved": [],
+      "pending": [
+        "a8net",
+        "moshimo"
+      ],
+      "target": [
+        "amazon_jp"
+      ]
+    }
+  },
+  "metrics_targets": {
+    "month_1": {
+      "blog_posts": 20,
+      "note_articles": 10,
+      "reddit_posts": 15,
+      "gumroad_products": 3,
+      "nl_subscribers": 50,
+      "revenue_usd": 0
+    }
+  },
+  "learnings": [],
+  "last_updated": "2026-03-16"
+}
