@@ -1,0 +1,29 @@
+name: "v2: Generate Product"
+on: workflow_dispatch
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Generate product
+        run: npx tsx scripts/v2/generate-product.ts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Show output
+        run: |
+          echo "=== Generated files ==="
+          find output/ -type f 2>/dev/null || echo "No output files"
+          echo ""
+          echo "=== Metadata ==="
+          cat output/*/metadata.json 2>/dev/null || echo "No metadata"
+      - name: Commit generated product
+        run: |
+          git config user.name "autopilot-bot"
+          git config user.email "bot@autopilot-media"
+          git add output/ state/v2-strategy.json
+          git diff --staged --quiet || git commit -m "Auto: generate Etsy product"
+          git push || echo "Push failed (will retry next run)"

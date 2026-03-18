@@ -1,0 +1,100 @@
+{
+  "version": "2.0",
+  "model": "etsy-digital-downloads",
+  "phase": "setup",
+  "product_queue": [
+    {
+      "niche": "Etsy Seller Profit & Fee Calculator 2026",
+      "target_audience": "New Etsy sellers who want to calculate true profit after all fees",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Meta-niche: selling tools TO Etsy sellers. High intent buyers. Specific pain point (Etsy fees are confusing)."
+    },
+    {
+      "niche": "Freelancer Invoice Tracker with Tax Estimation",
+      "target_audience": "Freelancers and solopreneurs who need to track invoices and estimate quarterly taxes",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Evergreen need. Tax season drives searches. Specific value: auto-calculates estimated tax."
+    },
+    {
+      "niche": "Wedding Budget Tracker with Vendor Payment Schedule",
+      "target_audience": "Engaged couples planning wedding on a budget",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "High-emotion purchase. Etsy is THE platform for wedding planning. Vendor payment schedule is unique angle."
+    },
+    {
+      "niche": "Small Business Inventory Tracker with Reorder Alerts",
+      "target_audience": "Small business owners and Etsy sellers who need simple inventory management",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Practical business tool. Conditional formatting for reorder alerts adds genuine utility."
+    },
+    {
+      "niche": "Subscription Tracker with Annual Cost Projection",
+      "target_audience": "People who want to track and reduce monthly subscription spending",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Trending niche (subscription fatigue). Visual dashboard showing annual burn rate."
+    },
+    {
+      "niche": "Debt Payoff Calculator Snowball & Avalanche Method",
+      "target_audience": "People with multiple debts who want a clear payoff plan",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Both methods compared side-by-side. Calculates exact payoff date. High emotional value."
+    },
+    {
+      "niche": "Content Creator Revenue Tracker Multi-Platform",
+      "target_audience": "YouTubers, TikTokers, and streamers tracking income across multiple platforms",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Growing audience of creators. No single tool tracks all platforms. Dashboard with monthly comparison."
+    },
+    {
+      "niche": "Meal Prep Planner with Grocery List Generator",
+      "target_audience": "Busy professionals who meal prep weekly",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Practical daily use. Auto-generates grocery list from selected recipes. Calculates calories/macros."
+    },
+    {
+      "niche": "Rental Property Income & Expense Tracker",
+      "target_audience": "Landlords with 1-5 rental properties",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Landlords need simple tracking for tax time. Multi-property tabs. Cash flow summary."
+    },
+    {
+      "niche": "Pet Care Schedule & Expense Tracker",
+      "target_audience": "Pet owners who want to track vet visits, medications, food costs",
+      "product_type": "spreadsheet",
+      "status": "pending",
+      "rationale": "Pet niche is emotional + underserved on Etsy for spreadsheets. Medication reminders + cost tracking."
+    }
+  ],
+  "etsy_config": {
+    "shop_id": null,
+    "daily_listing_limit": 5,
+    "price_range_usd": [3.99, 9.99],
+    "auto_publish": true
+  },
+  "pinterest_config": {
+    "board_id": null,
+    "pins_per_product": 3
+  },
+  "pdca_rules": {
+    "delist_after_days_no_views": 30,
+    "create_variation_if_favorites_above": 10,
+    "price_increase_if_cvr_above": 0.03,
+    "price_decrease_if_views_high_but_cvr_below": 0.005
+  },
+  "metrics": {
+    "total_listings": 0,
+    "total_sales": 0,
+    "total_revenue_usd": 0,
+    "best_sellers": []
+  },
+  "last_updated": "2026-03-18"
+}
