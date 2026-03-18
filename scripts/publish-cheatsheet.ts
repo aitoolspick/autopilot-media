@@ -38,13 +38,27 @@ By AI Tools Pick (@aitoolspick)`,
     })
   });
 
-  const data = await res.json() as { success: boolean; product?: { id: string; short_url: string } };
+  const text = await res.text();
+  console.log(`Response status: ${res.status}`);
+
+  if (!res.ok) {
+    console.error(`HTTP error ${res.status}: ${text.substring(0, 500)}`);
+    process.exit(1);
+  }
+
+  let data: { success: boolean; product?: { id: string; short_url: string } };
+  try {
+    data = JSON.parse(text);
+  } catch {
+    console.error(`Not JSON: ${text.substring(0, 500)}`);
+    process.exit(1);
+  }
 
   if (data.success && data.product) {
     console.log(`SUCCESS: ${data.product.short_url}`);
     console.log(`Product ID: ${data.product.id}`);
   } else {
-    console.error('Failed:', JSON.stringify(data));
+    console.error('Failed:', text.substring(0, 500));
     process.exit(1);
   }
 }
