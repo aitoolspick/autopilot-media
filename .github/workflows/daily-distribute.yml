@@ -1,8 +1,8 @@
 name: Daily Distribution
 
 on:
-  schedule:
-    - cron: '0 12 * * *'  # 毎日 12:00 UTC (21:00 JST)
+  # schedule:
+  #   - cron: '0 12 * * *'  # 毎日 12:00 UTC (21:00 JST)
   workflow_dispatch:
 
 permissions:

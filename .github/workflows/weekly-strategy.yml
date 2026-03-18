@@ -1,8 +1,8 @@
 name: Weekly Strategy Meeting
 
 on:
-  schedule:
-    - cron: '0 21 * * 0'  # 毎週日曜 21:00 UTC (翌月曜 06:00 JST)
+  # schedule:
+  #   - cron: '0 21 * * 0'  # 毎週日曜 21:00 UTC (翌月曜 06:00 JST)
   workflow_dispatch:
 
 permissions:
