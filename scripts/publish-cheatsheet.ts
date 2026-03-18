@@ -10,7 +10,7 @@ async function main() {
     process.exit(1);
   }
 
-  const res = await fetch('https://api.gumroad.com/v2/products', {
+  const res = await fetch('https://gumroad.com/api/v2/products', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
