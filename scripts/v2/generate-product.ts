@@ -67,7 +67,7 @@ interface NicheItem {
 async function generateProductSpec(niche: NicheItem): Promise<ProductSpec> {
   const message = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 4096,
+    max_tokens: 8192,
     messages: [{
       role: 'user',
       content: `You are a product designer for Etsy digital downloads. Design a Google Sheets / Excel spreadsheet template.
@@ -132,7 +132,45 @@ Return ONLY the JSON. No explanation.`
     jsonStr = jsonStr.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
   }
 
-  return JSON.parse(jsonStr) as ProductSpec;
+  // JSONの修復を試みる（末尾が切れている場合）
+  try {
+    return JSON.parse(jsonStr) as ProductSpec;
+  } catch (e) {
+    console.log(`  → JSON parse failed, attempting repair...`);
+    console.log(`  → Raw length: ${jsonStr.length}, last 100 chars: ${jsonStr.slice(-100)}`);
+
+    // 末尾の不完全な部分を削除して閉じる
+    // 最後の完全なオブジェクト/配列の閉じカッコを見つける
+    let repaired = jsonStr;
+    // 末尾にある不完全な文字列を削除
+    const lastComplete = Math.max(
+      repaired.lastIndexOf('}'),
+      repaired.lastIndexOf(']')
+    );
+    if (lastComplete > 0) {
+      repaired = repaired.substring(0, lastComplete + 1);
+      // 開きカッコと閉じカッコのバランスを取る
+      const opens = (repaired.match(/{/g) || []).length;
+      const closes = (repaired.match(/}/g) || []).length;
+      for (let i = 0; i < opens - closes; i++) repaired += '}';
+      const openBrackets = (repaired.match(/\[/g) || []).length;
+      const closeBrackets = (repaired.match(/\]/g) || []).length;
+      for (let i = 0; i < openBrackets - closeBrackets; i++) repaired += ']';
+    }
+
+    try {
+      return JSON.parse(repaired) as ProductSpec;
+    } catch {
+      // 最終手段: jsonStrの最初の{から最後の}まで
+      const firstBrace = jsonStr.indexOf('{');
+      const lastBrace = jsonStr.lastIndexOf('}');
+      if (firstBrace >= 0 && lastBrace > firstBrace) {
+        const extracted = jsonStr.substring(firstBrace, lastBrace + 1);
+        return JSON.parse(extracted) as ProductSpec;
+      }
+      throw new Error(`Failed to parse Claude response as JSON: ${(e as Error).message}`);
+    }
+  }
 }
 
 // ─── exceljs で .xlsx を生成 ───
