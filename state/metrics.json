@@ -23,12 +23,23 @@
       "nl_subscribers": 0,
       "blog_posts": 0,
       "note_articles": 0
+    },
+    {
+      "date": "2026-03-18",
+      "gumroad": {
+        "products": 0,
+        "sales": 0,
+        "revenue": 0
+      },
+      "nl_subscribers": 0,
+      "blog_posts": 3,
+      "note_articles": 3
     }
   ],
   "totals": {
-    "blog_posts": 0,
-    "note_articles": 0,
-    "reddit_posts": 0,
+    "blog_posts": 3,
+    "note_articles": 3,
+    "reddit_posts": 3,
     "x_posts_en": 0,
     "x_posts_ja": 0,
     "gumroad_products": 0,

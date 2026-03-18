@@ -6,7 +6,7 @@
     "ja"
   ],
   "phase": "setup",
-  "week": 0,
+  "week": 1,
   "content_queue": [
     {
       "topic": "Best AI Coding Assistants 2026: Claude Code vs Cursor vs Windsurf",
@@ -78,6 +78,125 @@
         "r/ClaudeAI"
       ],
       "status": "completed"
+    },
+    {
+      "topic": "Jasper AI Review 2026: Is It Worth $49/Month for Content Teams?",
+      "ja_topic": "Jasper AIレビュー2026：月額49ドルはコンテンツチームに価値があるか？",
+      "type": "review",
+      "priority": "high",
+      "affiliate_targets": [
+        "jasper.ai",
+        "copy.ai",
+        "writesonic.com"
+      ],
+      "reddit_subs": [
+        "r/content_marketing",
+        "r/SEO",
+        "r/Entrepreneur"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "SEMrush vs Ahrefs vs Moz 2026: Which SEO Tool Is Worth the Price?",
+      "ja_topic": "SEMrush vs Ahrefs vs Moz 2026：どのSEOツールが最もコスパ高い？",
+      "type": "comparison",
+      "priority": "high",
+      "affiliate_targets": [
+        "semrush.com",
+        "ahrefs.com",
+        "moz.com"
+      ],
+      "reddit_subs": [
+        "r/SEO",
+        "r/digital_marketing",
+        "r/Entrepreneur"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "Best AI Tools for Solopreneurs in 2026: The Complete Stack ($0-$100/month)",
+      "ja_topic": "ソロプレナー向けAIツール完全スタック2026年版（月0〜1万円で構築）",
+      "type": "listicle",
+      "priority": "high",
+      "affiliate_targets": [
+        "notion.com",
+        "jasper.ai",
+        "cursor.com",
+        "zapier.com"
+      ],
+      "reddit_subs": [
+        "r/solopreneur",
+        "r/Entrepreneur",
+        "r/SideProject"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "Notion AI vs ChatGPT for Project Management: Which Actually Saves More Time?",
+      "ja_topic": "Notion AI vs ChatGPT：プロジェクト管理で本当に時短になるのはどっち？",
+      "type": "comparison",
+      "priority": "high",
+      "affiliate_targets": [
+        "notion.com",
+        "claude.ai"
+      ],
+      "reddit_subs": [
+        "r/Notion",
+        "r/productivity",
+        "r/projectmanagement"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "Cursor AI Pricing 2026: Is the Pro Plan Worth It? (Honest Review After 60 Days)",
+      "ja_topic": "Cursor AI料金プラン2026年：Proプランは60日使って本当に価値があるか？",
+      "type": "review",
+      "priority": "high",
+      "affiliate_targets": [
+        "cursor.com",
+        "github.com",
+        "claude.ai"
+      ],
+      "reddit_subs": [
+        "r/programming",
+        "r/webdev",
+        "r/learnprogramming"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "5 AI Automation Tools That Replace a Virtual Assistant (With Pricing Breakdown)",
+      "ja_topic": "バーチャルアシスタントを代替するAI自動化ツール5選（料金比較付き）",
+      "type": "listicle",
+      "priority": "medium",
+      "affiliate_targets": [
+        "zapier.com",
+        "make.com",
+        "notion.com",
+        "jasper.ai"
+      ],
+      "reddit_subs": [
+        "r/automation",
+        "r/productivity",
+        "r/Entrepreneur"
+      ],
+      "status": "pending"
+    },
+    {
+      "topic": "Grammarly vs ProWritingAid vs Hemingway: Best AI Writing Assistant for 2026",
+      "ja_topic": "Grammarly vs ProWritingAid vs Hemingway：2026年版AIライティングアシスタント比較",
+      "type": "comparison",
+      "priority": "medium",
+      "affiliate_targets": [
+        "grammarly.com",
+        "prowritingaid.com"
+      ],
+      "reddit_subs": [
+        "r/writing",
+        "r/freelanceWriters",
+        "r/blogging"
+      ],
+      "status": "pending"
     }
   ],
   "product_queue": [
@@ -87,6 +206,16 @@
       "type": "prompt_pack",
       "price_usd": 9,
       "price_jpy": 980,
+      "platform": "gumroad",
+      "ja_platform": "note",
+      "status": "pending"
+    },
+    {
+      "name": "AI Solopreneur Toolkit: 50 Prompts + 10 Notion Templates for Building a One-Person Business",
+      "ja_name": "AIソロプレナーツールキット：一人ビジネスを作る50プロンプト＋Notionテンプレート10個",
+      "type": "toolkit",
+      "price_usd": 17,
+      "price_jpy": 1980,
       "platform": "gumroad",
       "ja_platform": "note",
       "status": "pending"
@@ -101,7 +230,12 @@
       "target": [
         "impact_semrush",
         "partnerstack_notion",
-        "jasper"
+        "jasper",
+        "impact_grammarly",
+        "partnerstack_zapier",
+        "partnerstack_cursor",
+        "partnerstack_make",
+        "prowritingaid"
       ]
     },
     "ja": {
@@ -111,7 +245,11 @@
         "moshimo"
       ],
       "target": [
-        "amazon_jp"
+        "amazon_jp",
+        "a8net_adobe_japan",
+        "moshimo_udemy_japan",
+        "a8net_sakura_internet",
+        "valuecommerce_rakuten_tools"
       ]
     }
   },
@@ -125,6 +263,14 @@
       "revenue_usd": 0
     }
   },
-  "learnings": [],
-  "last_updated": "2026-03-17"
+  "learnings": [
+    "Distribution infrastructure (affiliate approvals, Reddit karma, email list) must be built in parallel with content, not after — zero distribution means zero revenue regardless of content quality",
+    "Experience-type viral content should always have a newsletter capture CTA even when affiliate monetization is not possible — subscriber LTV exceeds one-time affiliate click value",
+    "Product launch velocity matters more than product perfection — an imperfect $9 product live on Gumroad on Day 1 outperforms a perfect product launching in Week 3",
+    "Japanese market (はてなブログ DR91) provides SEO backlink value that compounds over time — should be treated as a primary SEO asset, not secondary channel",
+    "High-commission programs (SEMrush $200/sale, Jasper $29-69/sale) should be prioritized over volume programs (Amazon 3-4%) — one SEMrush referral equals 50+ Amazon sales",
+    "Reddit karma is a prerequisite for any link post to perform — implement a comment-first, post-second strategy for all subreddit engagement",
+    "Comparison and review content with 'pricing' in the title captures bottom-of-funnel commercial intent traffic that converts at 3-5x higher rate than informational content"
+  ],
+  "last_updated": "2026-03-18"
 }
