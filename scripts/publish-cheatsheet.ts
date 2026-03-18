@@ -17,32 +17,36 @@ async function main() {
   const checkText = await checkRes.text();
   console.log(`Token check: GET /products → ${checkRes.status} (${checkText.substring(0, 200)})`);
 
-  const res = await fetch('https://api.gumroad.com/v2/products', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams({
-      name: 'The AI Tools Comparison Cheat Sheet 2026',
-      price: '3', // $3
-      description: `Stop wasting hours researching AI tools. This cheat sheet covers 15+ tools across 4 categories — tested, compared, and rated honestly.
+  // access_tokenをbodyに含める方式で試行
+  const params = new URLSearchParams({
+    access_token: token,
+    name: 'The AI Tools Comparison Cheat Sheet 2026',
+    price: '299', // セント単位: $2.99
+    description: `Stop wasting hours researching AI tools. This cheat sheet covers 15+ tools across 4 categories — tested, compared, and rated honestly.
 
 What's inside:
-• AI Writing Tools (Jasper vs Copy.ai vs Writesonic vs Grammarly) — side-by-side comparison
-• AI Coding Tools (Claude Code vs Cursor vs Windsurf vs Copilot) — for developers
-• AI General Assistants (ChatGPT vs Claude vs Gemini) — which to use for what
-• Notion Productivity Workflows — 4 approaches compared
-• Decision Flowchart — answer 3 questions, get your tool
-• Pricing Table — every plan, every tool, one table
-• Power User Combos — pre-built stacks from $0 to $58/month
+- AI Writing Tools (Jasper vs Copy.ai vs Writesonic vs Grammarly)
+- AI Coding Tools (Claude Code vs Cursor vs Windsurf vs Copilot)
+- AI General Assistants (ChatGPT vs Claude vs Gemini)
+- Notion Productivity Workflows — 4 approaches compared
+- Decision Flowchart — answer 3 questions, get your tool
+- Pricing Table — every plan, every tool, one table
+- Power User Combos — pre-built stacks from $0 to $58/month
 
 Updated for 2026. No fluff, no hype — just what works.
 
 By AI Tools Pick (@aitoolspick)`,
-      published: 'true',
-      tags: 'ai,tools,comparison,productivity,cheatsheet'
-    })
+    published: 'true'
+  });
+
+  console.log(`POST body length: ${params.toString().length}`);
+
+  const res = await fetch('https://api.gumroad.com/v2/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: params
   });
 
   const text = await res.text();
