@@ -1,7 +1,7 @@
 title: AI Tools Hub
 description: Honest reviews and comparisons of AI tools for productivity, coding, writing, and more.
-baseurl: ""
-url: ""
+baseurl: "/autopilot-media"
+url: "https://aitoolspick.github.io"
 theme: minima
 permalink: /:year/:month/:day/:title/
 markdown: kramdown
