@@ -18,8 +18,10 @@ import { TwitterApi } from 'twitter-api-v2';
 
 const ROOT = join(import.meta.dirname ?? __dirname, '..');
 const X_DIR = join(ROOT, 'content', 'x');
+const BLOG_DIR = join(ROOT, 'content', 'blog');
 const STATE_DIR = join(ROOT, 'state');
 const POSTED_FILE = join(STATE_DIR, 'x-posted.json');
+const BLOG_BASE_URL = 'https://aitoolspick.github.io/autopilot-media';
 
 if (existsSync(join(STATE_DIR, 'STOP'))) {
   console.log('STOP file detected. Aborting.');
@@ -91,12 +93,18 @@ async function main() {
   const data = JSON.parse(readFileSync(join(X_DIR, file), 'utf-8'));
   let anyPosted = false;
 
+  // ファイル名からブログURLを構築
+  // ファイル名例: 2026-03-17-chatgpt-vs-claude.json → ブログ記事のslugに対応
+  const dateSlug = file.replace('.json', '');
+  const blogUrl = findBlogUrl(dateSlug);
+
   // 英語ツイート
   const { X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET } = process.env;
   if (X_API_KEY && X_API_SECRET && X_ACCESS_TOKEN && X_ACCESS_SECRET) {
     const tweets = parseTweets(data.en);
     if (tweets.length > 0) {
-      const ok = await postTweet(tweets[0], X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET, 'EN');
+      const tweetText = appendBlogUrl(tweets[0], blogUrl, 280);
+      const ok = await postTweet(tweetText, X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET, 'EN');
       if (ok) anyPosted = true;
     }
   } else {
@@ -119,6 +127,31 @@ async function main() {
     posted.push(file);
     writeFileSync(POSTED_FILE, JSON.stringify(posted, null, 2));
   }
+}
+
+function findBlogUrl(dateSlug: string): string | null {
+  if (!existsSync(BLOG_DIR)) return null;
+  const blogFiles = readdirSync(BLOG_DIR).filter(f => f.endsWith('.md'));
+  // dateSlugと同じ日付のブログ記事を探す
+  const datePrefix = dateSlug.substring(0, 10); // YYYY-MM-DD
+  const match = blogFiles.find(f => f.startsWith(datePrefix));
+  if (!match) return null;
+  // Jekyll URL: /YYYY/MM/DD/slug/
+  const parts = match.replace('.md', '').match(/^(\d{4})-(\d{2})-(\d{2})-(.+)$/);
+  if (!parts) return null;
+  return `${BLOG_BASE_URL}/${parts[1]}/${parts[2]}/${parts[3]}/${parts[4]}/`;
+}
+
+function appendBlogUrl(tweet: string, blogUrl: string | null, maxLen: number): string {
+  if (!blogUrl) return tweet;
+  const suffix = `\n\n${blogUrl}`;
+  // URLを足しても文字数制限内に収まるか
+  if (tweet.length + suffix.length <= maxLen) {
+    return tweet + suffix;
+  }
+  // 収まらない場合はツイート本文を切り詰める
+  const available = maxLen - suffix.length - 3; // "..." 分
+  return tweet.substring(0, available) + '...' + suffix;
 }
 
 main().catch(console.error);

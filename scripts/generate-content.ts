@@ -40,8 +40,31 @@ interface Strategy {
   [key: string]: unknown;
 }
 
+const BLOG_BASE_URL = 'https://aitoolspick.github.io/autopilot-media';
+
+// アフィリエイトリンクマッピング（直接登録不要のリファラルリンク + 公式サイトリンク）
+// アフィリプログラム承認後にここを更新する
+const AFFILIATE_LINKS: Record<string, { url: string; label: string }> = {
+  'cursor.com': { url: 'https://www.cursor.com/', label: 'Cursor' },
+  'claude.ai': { url: 'https://claude.ai/upgrade', label: 'Claude Pro' },
+  'chatgpt.com': { url: 'https://chatgpt.com/', label: 'ChatGPT' },
+  'jasper.ai': { url: 'https://www.jasper.ai/', label: 'Jasper AI' },
+  'grammarly.com': { url: 'https://www.grammarly.com/', label: 'Grammarly' },
+  'notion.so': { url: 'https://www.notion.so/', label: 'Notion' },
+  'semrush.com': { url: 'https://www.semrush.com/', label: 'SEMrush' },
+  'ahrefs.com': { url: 'https://ahrefs.com/', label: 'Ahrefs' },
+  'moz.com': { url: 'https://moz.com/', label: 'Moz' },
+  'windsurf.com': { url: 'https://windsurf.com/', label: 'Windsurf' },
+  'github.com/features/copilot': { url: 'https://github.com/features/copilot', label: 'GitHub Copilot' },
+  'writesonic.com': { url: 'https://writesonic.com/', label: 'Writesonic' },
+  'copy.ai': { url: 'https://www.copy.ai/', label: 'Copy.ai' },
+  'zapier.com': { url: 'https://zapier.com/', label: 'Zapier' },
+  'make.com': { url: 'https://www.make.com/', label: 'Make' },
+  'midjourney.com': { url: 'https://www.midjourney.com/', label: 'Midjourney' },
+};
+
 // 全コンテンツ生成に適用される絶対ルール（--append-system-prompt相当）
-const SYSTEM_RULES = `You are a content writer for an AI tools review blog.
+const SYSTEM_RULES = `You are a content writer for an AI tools review blog (aitoolspick.github.io/autopilot-media).
 Absolute rules (never violate):
 - Include FTC/景品表示法 affiliate disclosure in every article
 - Never make false claims about tools. Only write what you actually know.
@@ -49,6 +72,8 @@ Absolute rules (never violate):
 - Never guarantee results or make income claims
 - Factual accuracy is paramount. If unsure, say "based on available information"
 - Content must provide genuine value. No filler or fluff.
+- Every tool mentioned MUST have a clickable link to its official site or sign-up page.
+- When recommending a tool, use a clear CTA like "Try [Tool] here" or "Get started with [Tool]" with the link.
 
 Reference past successes from references/past-hits.md patterns when available.
 Reference lessons from lessons.md to avoid past mistakes.`;
@@ -84,6 +109,14 @@ async function main() {
 
   console.log(`Generating content for: ${nextItem.topic}`);
 
+  // アフィリリンク情報を構築
+  const affiliateInfo = nextItem.affiliate_targets
+    .map(target => {
+      const link = AFFILIATE_LINKS[target];
+      return link ? `- ${link.label}: ${link.url}` : `- ${target}`;
+    })
+    .join('\n');
+
   // 1. 英語ブログ記事
   try {
     const enContent = await generateText(`Write a comprehensive, SEO-optimized blog post about: "${nextItem.topic}"
@@ -91,15 +124,19 @@ async function main() {
 Requirements:
 - 2000-2500 words
 - Include H2 and H3 headings
-- Include a comparison table if applicable
+- Include a comparison table if applicable (use Markdown tables)
 - Include pros and cons for each tool mentioned
 - Natural, conversational tone
-- FTC disclosure at the top: "This post contains affiliate links. I may earn a commission at no extra cost to you."
-- End with a clear recommendation
+- FTC disclosure at the top: "*Disclosure: Some links in this article are affiliate links. I may earn a commission at no extra cost to you.*"
+- End with a clear recommendation and a "Getting Started" section with direct links
 - Format as Markdown
 - Do NOT include any preamble or explanation. Start directly with the article content.
+- CRITICAL: Every tool mentioned MUST include a hyperlink to its sign-up or pricing page. Use inline Markdown links like [Tool Name](https://url). Do NOT just mention tool names without links.
+- Include a "Quick Links" section near the top with direct links to all tools discussed.
+- End each tool section with a CTA like "→ [Try Tool Name free](https://url)" or "→ [Check Tool Name pricing](https://url/pricing)"
 
-Affiliate targets: ${nextItem.affiliate_targets.join(', ') || 'none'}`);
+Tool links to use:
+${affiliateInfo || 'Use official tool websites'}`);
 
     const blogDir = join(CONTENT_DIR, 'blog');
     mkdirSync(blogDir, { recursive: true });
@@ -117,19 +154,24 @@ ${enContent}`;
     console.error('EN blog generation failed:', e);
   }
 
-  // 2. 日本語note記事
+  // 2. 日本語はてなブログ記事
   try {
-    const jaContent = await generateText(`以下のテーマについて、note.com用の記事を書いてください: "${nextItem.ja_topic}"
+    const jaContent = await generateText(`以下のテーマについて、はてなブログ用の記事を書いてください: "${nextItem.ja_topic}"
 
 要件:
 - 2000-3000文字
 - 見出し（##、###）を適切に使用
-- 比較表がある場合は含める
+- 比較表がある場合はMarkdownテーブルで含める
 - 友達に教えるようなカジュアルなトーン
 - 記事末尾に「※この記事にはアフィリエイトリンクを含みます」の開示
 - 具体的な使い方や活用例を含める
+- 重要: 各ツールの公式サイトへのリンクを必ず含める。[ツール名](https://url) 形式で。
+- 各ツールのセクション末尾に「→ [ツール名の公式サイトはこちら](https://url)」のCTAを入れる
 - Markdown形式
-- 前置きや説明なしで、記事本文のみを出力してください。`);
+- 前置きや説明なしで、記事本文のみを出力してください。
+
+使用するリンク:
+${affiliateInfo || '各ツールの公式サイトURLを使用'}`);
 
     const noteDir = join(CONTENT_DIR, 'note');
     mkdirSync(noteDir, { recursive: true });
@@ -167,14 +209,29 @@ Rules:
   }
 
   // 4. X投稿（英語+日本語）
+  // ブログURLはpost-x.tsで自動付与されるので、ツイート本文は230文字以内にする
   try {
     const xEnContent = await generateText(`Write exactly 3 tweets about: "${nextItem.topic}"
-Each tweet must be under 280 characters.
+
+Rules:
+- Each tweet must be under 230 characters (a URL will be appended automatically).
+- Tweet 1: A bold, curiosity-driven hook. Make people want to click.
+- Tweet 2: Share one specific insight or data point from the article.
+- Tweet 3: A hot take or contrarian opinion to drive engagement.
+- Do NOT include URLs or hashtags — they'll be added automatically.
+- Write like a human, not a brand. Be opinionated.
 Return ONLY a JSON array of 3 strings. No explanation, no markdown, no code fences.
-Example format: ["tweet 1", "tweet 2", "tweet 3"]`, 'claude-haiku-4-5-20251001');
+Example: ["tweet 1", "tweet 2", "tweet 3"]`, 'claude-haiku-4-5-20251001');
 
     const xJaContent = await generateText(`以下のテーマについてX(Twitter)投稿を3つ書いてください: "${nextItem.ja_topic}"
-各投稿は140文字以内。
+
+ルール:
+- 各投稿は120文字以内（URLが自動付与されるため）
+- 投稿1: 好奇心を刺激するフック。クリックしたくなる内容
+- 投稿2: 記事から1つ具体的な発見・データを共有
+- 投稿3: 議論を呼ぶ意見やホットテイク
+- URLやハッシュタグは不要（自動付与）
+- 企業アカウントではなく個人の発信トーンで
 JSON配列のみを返してください。説明やコードフェンスは不要です。
 例: ["投稿1", "投稿2", "投稿3"]`, 'claude-haiku-4-5-20251001');
 
